@@ -1,14 +1,12 @@
 <script>
-
+    
     import {goto} from '$app/navigation';
-    import {quizScore} from '$lib/stores';
+    import {testQuestions, session_id} from '$lib/stores'
 
     let questions = $state([]);
     let isLoading = $state(false);
-    let currentQuestionIndex = $state(0);
-    const totalQuestions = $derived(questions.length);
-    let selectedOption = $state(null);
-    let answers = $state([]);
+    let user_name = $state('');
+    let nameError = $state('');
 
     // Fucntion to fetch the given API, convert object to Array, and handle any error
     async function fetchQuestions() {
@@ -16,17 +14,11 @@
         try {
             const response = await fetch('https://phrxciu6ad.execute-api.ap-south-1.amazonaws.com/stage/saa-questions');
             const data = await response.json();
-            questions = Object.values(data);
+            $testQuestions = Object.values(data);
             isLoading = false;
         } catch (error) {
             console.error('Error fetching questions:', error);
             isLoading = false;
-        }
-    }
-
-    function nextQuestion() {
-        if (currentQuestionIndex < totalQuestions - 1) {
-            currentQuestionIndex += 1;
         }
     }
 
@@ -36,81 +28,97 @@
             fn();
         };
     }
+    
+    // Verify the user_name is alphanum and not empty
+    function validateUserName(name) {
+        if (!name) return 'Please enter a nickname'
 
-    // Function to handle what happens on clicking the submit button after each question
-    // 
-    async function handleSubmit() {
-        if (selectedOption !== null) {
-            const answer = {
-                id: questions[currentQuestionIndex].id,
-                answer: Number(selectedOption)
-            };
+        if (name.trim().length < 3) return 'Nickname should be at least 3 char long'
 
-            answers = [...answers, answer];
+        const hasLetter = /[a-zA-Z]/.test(name)
+        const isAlphaNum = /^[a-zA-Z0-9]+$/.test(name);
 
-            if (currentQuestionIndex === (totalQuestions -1)) {
-                // Submit test to get a score from the api
-                isLoading = true;
-                try {
-                    console.log(answers);
-                    const response = await fetch('https://phrxciu6ad.execute-api.ap-south-1.amazonaws.com/stage/submit-test', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(answers)
-                    });
-
-                    const result = await response.json();
-                    $quizScore = result.score;
-                    goto('/result');
-
-                } catch (error) {
-                    console.error('Error submitting test:', error);
-                } finally {
-                    isLoading = false;
-                }
-            } else {
-                selectedOption = null;
-                nextQuestion();
-            }
-        }
+        if (!hasLetter || !isAlphaNum) return 'Must be alphanum' 
+        return ''
     }
+
+    function handleInput() {
+        nameError = validateUserName(user_name);
+    }
+
+    function isValidUserName(name) {
+        return validateUserName(name) === '';
+    }
+
+    // Function to handle on clicking of take test button
+    async function handle_submit() {
+
+        try {
+            let create_user = {'user_name' : user_name}
+            const response = await fetch('https://phrxciu6ad.execute-api.ap-south-1.amazonaws.com/stage/create-user', {
+                'method' : 'POST',
+                'headers' : {
+                    'Content-Type': 'application/json'
+                },
+                'body': JSON.stringify(create_user)
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to create user');
+            }
+
+            $session_id = await response.json();
+            localStorage.setItem('username', user_name)
+            await fetchQuestions()
+            await goto('/test')
+        } catch (error) {
+            console.error('Error submitting test:', error);
+        } 
+    }
+
 </script>
 
-<h1>Hi Ravi!</h1>
+<h1>Welcome!</h1>
 
-<button onclick={fetchQuestions}>
-    {#if isLoading}
-        Loading... 
-    {:else}
-        Start the test!
-    {/if}
-</button>
-
-{#if questions.length > 0}
-    <div>
-        <h3>{questions[currentQuestionIndex].question}</h3>
-        <div>
-            <form onsubmit={preventDefault(handleSubmit)}>
-                {#each questions[currentQuestionIndex].options as option, index}
-                    <label>
-                        <input 
-                            type="radio" 
-                            name={questions[currentQuestionIndex].question} 
-                            value={index}
-                            bind:group={selectedOption} />
-                        {option}
-                    </label><br>
-                {/each}
-                <div>
-                    <input 
-                        type="submit" 
-                        value={currentQuestionIndex === (totalQuestions - 1) ? 'Submit Test' : 'Submit'}
-                        disabled={selectedOption === null}
-                        />
-                </div>
-            </form>
+<div>
+    <form onsubmit={preventDefault(handle_submit)}>
+        <input type='text' 
+        name='user_name' 
+        placeholder='Give us your nickname'
+        bind:value={user_name}
+        oninput={handleInput}
+        />
+        {#if nameError}
+        <div class='error'>
+            {nameError}
         </div>
-    </div>
-{/if}
+        {/if}
+        <input 
+        type='submit' 
+        value='Take the test'
+        disabled={!isValidUserName(user_name)}
+        />
+    </form>
+</div>
+
+
+<style>
+    .error {
+        color: red;
+        font-size: 0.8em;
+        margin-top: 0.2em;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    input {
+        padding: 0.5em;
+    }
+</style>
+
+
+

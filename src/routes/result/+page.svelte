@@ -1,5 +1,16 @@
 <script>
     import {quizScore} from '$lib/stores';
+    import {goto} from '$app/navigation'
+    import {mount, onMount} from 'svelte'
+
+    onMount(() => {
+        const user_name = localStorage.getItem('username')
+        if (!user_name) {
+            goto('/')
+        }
+    })
+
+
     
 </script>
 
