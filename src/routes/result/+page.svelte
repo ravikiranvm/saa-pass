@@ -4,7 +4,7 @@
     import {mount, onMount} from 'svelte'
 
     onMount(() => {
-        const user_name = localStorage.getItem('username')
+        const user_name = sessionStorage.getItem('username')
         if (!user_name) {
             goto('/')
         }
