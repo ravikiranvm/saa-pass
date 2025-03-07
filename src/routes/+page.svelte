@@ -68,7 +68,7 @@
             }
 
             $session_id = await response.json();
-            localStorage.setItem('username', user_name)
+            sessionStorage.setItem('username', user_name)
             await fetchQuestions()
             await goto('/test')
         } catch (error) {

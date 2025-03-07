@@ -42,7 +42,7 @@
             const payload = {
                 answers,
                 session_id: $session_id,
-                user_name: localStorage.getItem('username')
+                user_name: sessionStorage.getItem('username')
             }
 
             if (currentQuestionIndex === (totalQuestions -1)) {
