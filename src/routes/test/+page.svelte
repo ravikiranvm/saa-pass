@@ -10,7 +10,7 @@
     let selectedOption = $state(null);
     let answers = $state([]);
     let countdown;
-    let displayTime = $state('30:00')
+    let displayTime = $state('100:00')
 
 
     // this function displays the time in 00:00 format
@@ -107,7 +107,7 @@
             goto('/')
         }
 
-        startTimer(1800); // Timer runs for 30 minutes
+        startTimer(6000); // Timer runs for 30 minutes
 
         // Add cleanup
         return () => {
@@ -120,35 +120,42 @@
 
 
 {#if questions.length > 0}
-    <div>
-        <h3>{questions[currentQuestionIndex].question}</h3>
+    <div class="max-w-3xl mx-auto px-10 py-10
+    shadow-sm shadow-[#cfcccd]-500/50">
+        <div class="mb-4 font-roboto">
+            Question {currentQuestionIndex + 1} of {totalQuestions}
+        </div>
+        <div class="mb-6 font-roboto font-medium
+        shadow-sm shadow-[#cfcccd]-500/50">{questions[currentQuestionIndex].question}</div>
         <div>
             <form onsubmit={preventDefault(handleSubmit)}>
                 {#each questions[currentQuestionIndex].options as option, index}
-                    <label>
+                    <label class="grid grid-cols-[auto,1fr] gap-x-4 py-1 rounded-lg 
+                    hover:bg-[#cfcccd] hover:scale-105
+                    transition delay-150 duration-100 ease-in
+                    shadow-sm shadow-[#cfcccd]-500/50">
                         <input 
                             type="radio" 
                             name={questions[currentQuestionIndex].question} 
                             value={index}
-                            bind:group={selectedOption} />
+                            bind:group={selectedOption} 
+                            class="accent-[#f5b83d]"/>
                         {option}
                     </label><br>
                 {/each}
-                <div>
+                <div class="mt-4 justify-self-center font-roboto">
                     <input 
                         type="submit" 
                         value={currentQuestionIndex === (totalQuestions - 1) ? 'Submit Test' : 'Submit'}
                         disabled={selectedOption === null}
-                        />
+                        class="disabled:opacity-30 hover:bg-[#f5b83d] hover:text-white rounded-lg w-24
+                        hover:scale-105 transition delay-50 duration-100 ease-in-out
+                        shadow-sm shadow-[#cfcccd]-500/50"/>
                 </div>
             </form>
         </div>
     </div>
 {/if}
-
-<div class="progress">
-    Question {currentQuestionIndex + 1} of {totalQuestions}
-</div>
 
 <div class="timer">
     <h2>Timer Test</h2>
@@ -162,11 +169,6 @@
     }
     .time {
         font-size: 2rem;
-        font-weight: bold;
-    }
-
-    .progress {
-        margin-bottom: 1rem;
         font-weight: bold;
     }
 </style>

@@ -78,46 +78,53 @@
 
 </script>
 
-<h1>Welcome!</h1>
+<div class="flex pt-10 pb-10 pl-4 pr-4 text-4xl text-black font-gowun">
+    <div >CLOUD GUIDE</div>
+</div>
 
-<div>
+<div class="flex-col place-items-start pt-4 pb-4 pl-4 pr-4 text-black font-gowun tracking-widest">
+    <div class="text-base">Check Your</div>
+    <div class="text-lg">AWS Solutions Architect Associate</div>
+    <div class="text-base">Exam Readiness!</div>
+</div>
+
+<div class="flex-col place-items-start pt-4 pb-4 pl-4 pr-4 text-black font-roboto tracking-widest text-base">
+    <div>Answer 30 questions in 30 minutes.</div>
+    <div class="mt-2">All questions are made from my personal notes.</div>
+    <div class="mt-2">I scored 899/1000 with no tech background by following this notes!</div>
+</div>
+
+<div class="flex justify-start pl-4 pt-10 pb-5">
     <form onsubmit={preventDefault(handle_submit)}>
-        <input type='text' 
-        name='user_name' 
-        placeholder='Give us your nickname'
+        <input class="bg-[#f5f2f2] focus:outline-none border-back border-b-2 focus:border-black"
+        type='text' 
+        name='user_name'
+        placeholder='Enter your nickname'
+        autofocus
         bind:value={user_name}
         oninput={handleInput}
         />
-        {#if nameError}
-        <div class='error'>
-            {nameError}
-        </div>
-        {/if}
         <input 
         type='submit' 
-        value='Take the test'
+        value='Submit'
         disabled={!isValidUserName(user_name)}
+        class="rounded-sm w-40 ml-4 font-roboto tracking-wider
+        disabled:opacity-0 bg-[#f5b83d] text-white rounded-lg w-24
+        transition hover:scale-105 delay-50 duration-100 ease-in-out"
         />
     </form>
 </div>
-
+<div class="flex flex-row justify-start pl-4 pr-4 font-roboto">
+    {#if nameError}
+        <div class="text-[#bd2a4c] text-xs">
+            {nameError}
+        </div>
+    {/if}
+</div>
 
 <style>
-    .error {
-        color: red;
-        font-size: 0.8em;
-        margin-top: 0.2em;
-    }
+    
 
-    form {
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    input {
-        padding: 0.5em;
-    }
 </style>
 
 
