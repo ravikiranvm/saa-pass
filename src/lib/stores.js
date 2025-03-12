@@ -11,3 +11,11 @@ export const session_id = writable('');
 export const answers = writable([]);
 
 export const time_taken = writable(0);
+
+export function reset_stores() {
+    quizScore.set(0);
+    testQuestions.set([]);
+    session_id.set('');
+    answers.set([]);
+    time_taken.set(0);
+}

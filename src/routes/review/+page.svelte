@@ -40,7 +40,9 @@
     <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
         <!-- Left side - App name and exam title -->
         <div class="flex flex-col">
-            <div class="text-xl font-gowun font-bold text-black">CLOUD GUIDE</div>
+            <div class="text-xl font-gowun font-bold text-black">
+                <a href='/'>CLOUD GUIDE</a>
+            </div>
             <div class="text-xs font-roboto text-gray-600">Review Answers</div>
         </div>
     </div>
@@ -132,18 +134,16 @@
             No {filterMode === "correct" ? "correct" : "incorrect"} answers to display.
         </div>
     {/if}
-    <!--
     <div class="flex justify-center mt-8">
         <button 
-            class="px-4 py-2 bg-black text-white text-sm rounded hover:bg-[#f5b83d] transition-colors"
-            onClick={() => goto('/test')}>
-            Take Test Again
+            class="px-6 py-3 bg-black text-white text-sm rounded hover:bg-[#f5b83d] transition-colors"
+            onclick={() => {goto('/')}}>
+            Retake Test
         </button>
     </div>
-    -->
 </div>
 
-<div class="mt-10 text-xs text-center text-gray-500 font-roboto">
+<div class="mt-4 pb-2 text-xs text-center text-gray-500 font-roboto">
     <p>© {new Date().getFullYear()} Cloud Guide. All rights reserved.</p>
     <p>made by raviki.</p>
 </div>

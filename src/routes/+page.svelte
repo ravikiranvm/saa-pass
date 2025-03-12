@@ -1,7 +1,8 @@
 <script>
     
     import {goto} from '$app/navigation';
-    import {testQuestions, session_id} from '$lib/stores'
+    import {testQuestions, session_id, reset_stores} from '$lib/stores'
+    import {onMount} from 'svelte'
 
     let questions = $state([]);
     let isLoading = $state(false);
@@ -13,6 +14,7 @@
     let hasAtLeastOneLetter = $state(false);
 
     let isSubmitting = $state(false)
+
 
     // Fucntion to fetch the given API, convert object to Array, and handle any error
     async function fetchQuestions() {
@@ -34,30 +36,14 @@
             fn();
         };
     }
-    
-    /* Verify the user_name is alphanum and not empty
-    function validateUserName(name) {
-        if (!name) return 'Please enter a nickname'
-
-        if (name.trim().length < 3) return 'Nickname should be at least 3 char long'
-
-        const hasLetter = /[a-zA-Z]/.test(name)
-        const isAlphaNum = /^[a-zA-Z0-9]+$/.test(name);
-
-        if (!hasLetter || !isAlphaNum) return 'Must be alphanum' 
-        return ''
-    }*/
 
     function handleInput() {
-        //nameError = validateUserName(user_name);
-
         isLongEnough = user_name.trim().length >= 3;
         isAlphaNumeric = /^[a-zA-Z0-9]+$/.test(user_name);
         hasAtLeastOneLetter = /[a-zA-Z]/.test(user_name);
     }
 
     function isValidUserName(name) {
-        //return validateUserName(name) === '';
         return name && isLongEnough && isAlphaNumeric && hasAtLeastOneLetter;
     }
 
@@ -96,6 +82,10 @@
             isSubmitting = false;
         } 
     }
+
+    onMount(() => {
+        reset_stores();
+    })
 
 </script>
 
@@ -175,7 +165,7 @@
                 <div class="absolute top-0 left-0 w-full h-full border-4 border-t-[#f5b83d] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
             </div>
             <h2 class="text-xl font-gowun mt-5 text-gray-800">Preparing Your Exam</h2>
-            <p class="text-sm font-roboto text-gray-600 mt-2">Generating questions based on AWS SAA Exam topics...</p>
+            <p class="text-sm font-roboto text-gray-600 mt-2">Generating questions...</p>
             <p class="text-sm font-roboto text-gray-600 mt-2">You'll have 30 minutes to answer 30 questions.</p>
 
         </div>

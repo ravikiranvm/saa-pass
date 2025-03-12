@@ -1,6 +1,6 @@
 <script>
 
-    import { testQuestions, quizScore, session_id, answers } from '$lib/stores';
+    import { testQuestions, quizScore, session_id, answers, time_taken } from '$lib/stores';
     import { goto } from '$app/navigation'
     import { onMount } from 'svelte';
     import { fade } from 'svelte/transition';
@@ -14,6 +14,7 @@
     let displayTime = $state('30:00')
 
     let isSubmitting = $state(false);
+    let time_elapsed;
 
 
     // this function displays the time in 00:00 format
@@ -80,6 +81,8 @@
     async function submitTest() {
         isSubmitting = true;
 
+        $time_taken = Date.now() - time_elapsed;
+
         const payload = {
                 answers: $answers,
                 session_id: $session_id,
@@ -104,7 +107,7 @@
             if (submitTime < 2000) {
                 await new Promise(resolve => setTimeout(resolve, 2000 - submitTime));
             }
-            goto('/result');
+            goto('/result', { replaceState: true });
 
         } catch (error) {
             console.error('Error submitting test:', error);
@@ -116,6 +119,8 @@
         if (!user) {
             goto('/')
         }
+
+        time_elapsed = Date.now();
 
         startTimer(1800); // Timer runs for 30 minutes
 
@@ -190,13 +195,6 @@
         </div>
     </div>
 {/if}
-
-
-
-<div class="mt-10 text-xs text-center text-gray-500 font-roboto">
-    <p>© {new Date().getFullYear()} Cloud Guide. All rights reserved.</p>
-    <p>made by raviki.</p>
-</div>
 
 {#if isSubmitting}
     <div class="fixed inset-0 bg-white bg-opacity-95 z-50 flex flex-col items-center justify-center">
