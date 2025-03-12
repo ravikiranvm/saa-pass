@@ -7,3 +7,7 @@ export const quizScore = writable(0);
 export const testQuestions = writable([]);
 
 export const session_id = writable('');
+
+export const answers = writable([]);
+
+export const time_taken = writable(0);

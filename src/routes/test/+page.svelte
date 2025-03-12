@@ -1,16 +1,19 @@
 <script>
 
-    import { testQuestions, quizScore, session_id } from '$lib/stores';
+    import { testQuestions, quizScore, session_id, answers } from '$lib/stores';
     import { goto } from '$app/navigation'
     import { onMount } from 'svelte';
+    import { fade } from 'svelte/transition';
 
     let questions = $testQuestions;
     let totalQuestions = questions.length;
     let currentQuestionIndex = $state(0);
     let selectedOption = $state(null);
-    let answers = $state([]);
+    //let answers = $state([]);
     let countdown;
-    let displayTime = $state('100:00')
+    let displayTime = $state('30:00')
+
+    let isSubmitting = $state(false);
 
 
     // this function displays the time in 00:00 format
@@ -62,7 +65,7 @@
                 answer: Number(selectedOption)
             };
 
-            answers = [...answers, answer];
+            $answers = [...$answers, answer];
 
             if (currentQuestionIndex === (totalQuestions -1)) {
                 await submitTest()
@@ -75,14 +78,16 @@
 
     // This function submits the answers to the api with answers, session_id and user_name
     async function submitTest() {
+        isSubmitting = true;
 
         const payload = {
-                answers,
+                answers: $answers,
                 session_id: $session_id,
                 user_name: sessionStorage.getItem('username')
             }
         
         try {
+            const submitStart = Date.now();
 
             const response = await fetch('https://phrxciu6ad.execute-api.ap-south-1.amazonaws.com/stage/submit-test', {
                 method: 'POST',
@@ -94,6 +99,11 @@
 
             const result = await response.json();
             $quizScore = result.score;
+
+            const submitTime = Date.now() - submitStart;
+            if (submitTime < 2000) {
+                await new Promise(resolve => setTimeout(resolve, 2000 - submitTime));
+            }
             goto('/result');
 
         } catch (error) {
@@ -107,7 +117,7 @@
             goto('/')
         }
 
-        startTimer(6000); // Timer runs for 30 minutes
+        startTimer(1800); // Timer runs for 30 minutes
 
         // Add cleanup
         return () => {
@@ -118,57 +128,110 @@
 
 </script>
 
+<nav class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 shadow-sm z-10">
+    <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+        <!-- Left side - App name and exam title -->
+        <div class="flex flex-col">
+            <div class="text-xl font-gowun font-bold text-black">CLOUD GUIDE</div>
+            <div class="text-xs font-roboto text-gray-600">AWS SAA Exam Readiness</div>
+        </div>
+        
+        <!-- Right side - Timer -->
+        <div class="px-3 py-2 bg-black text-white font-mono font-medium rounded">
+            {displayTime}
+        </div>
+    </div>
+</nav>
 
+<!-- Add spacing to prevent content from being hidden under the fixed navbar -->
+<div class="pt-12"></div>
+
+
+<!-- Main content with padding at bottom to prevent overlap with fixed button -->
 {#if questions.length > 0}
-    <div class="max-w-3xl mx-auto px-10 py-10
-    shadow-sm shadow-[#cfcccd]-500/50">
-        <div class="mb-4 font-roboto">
+    <div class="max-w-3xl mx-auto px-4 sm:px-8 py-6 mt-8 pb-24 bg-white border border-gray-200 rounded-lg">
+        <div class="mb-4 font-roboto text-sm text-gray-600">
             Question {currentQuestionIndex + 1} of {totalQuestions}
         </div>
-        <div class="mb-6 font-roboto font-medium
-        shadow-sm shadow-[#cfcccd]-500/50">{questions[currentQuestionIndex].question}</div>
-        <div>
-            <form onsubmit={preventDefault(handleSubmit)}>
+        
+        <div class="mb-6 font-roboto font-medium text-gray-800">
+            {questions[currentQuestionIndex].question}
+        </div>
+        
+        <form onsubmit={preventDefault(handleSubmit)}>
+            <div class="space-y-3">
                 {#each questions[currentQuestionIndex].options as option, index}
-                    <label class="grid grid-cols-[auto,1fr] gap-x-4 py-1 rounded-lg 
-                    hover:bg-[#cfcccd] hover:scale-105
-                    transition delay-150 duration-100 ease-in
-                    shadow-sm shadow-[#cfcccd]-500/50">
+                    <label class="flex items-start gap-x-4 p-3 border border-gray-200 rounded-lg 
+                            hover:bg-gray-50 cursor-pointer transition-colors duration-150">
                         <input 
                             type="radio" 
                             name={questions[currentQuestionIndex].question} 
                             value={index}
                             bind:group={selectedOption} 
-                            class="accent-[#f5b83d]"/>
-                        {option}
-                    </label><br>
+                            class="mt-1 accent-[#f5b83d]"/>
+                        <span>{option}</span>
+                    </label>
                 {/each}
-                <div class="mt-4 justify-self-center font-roboto">
-                    <input 
-                        type="submit" 
-                        value={currentQuestionIndex === (totalQuestions - 1) ? 'Submit Test' : 'Submit'}
-                        disabled={selectedOption === null}
-                        class="disabled:opacity-30 hover:bg-[#f5b83d] hover:text-white rounded-lg w-24
-                        hover:scale-105 transition delay-50 duration-100 ease-in-out
-                        shadow-sm shadow-[#cfcccd]-500/50"/>
-                </div>
-            </form>
+            </div>
+        </form>
+    </div>
+    
+    <!-- Fixed button container always visible at bottom -->
+    <div class="fixed bottom-0 left-0 right-0 py-4 bg-white border-t border-gray-200 shadow-md z-10">
+        <div class="max-w-3xl mx-auto px-4 sm:px-8 flex justify-center">
+            <button 
+                type="button"
+                onclick={handleSubmit}
+                disabled={selectedOption === null}
+                class="px-6 py-2 bg-black text-white text-sm rounded
+                    disabled:opacity-30">
+                {currentQuestionIndex === (totalQuestions - 1) ? 'Submit Test' : 'Next Question'}
+            </button>
         </div>
     </div>
 {/if}
 
-<div class="timer">
-    <h2>Timer Test</h2>
-    <div class="time">{displayTime}</div>
+
+
+<div class="mt-10 text-xs text-center text-gray-500 font-roboto">
+    <p>© {new Date().getFullYear()} Cloud Guide. All rights reserved.</p>
+    <p>made by raviki.</p>
 </div>
 
+{#if isSubmitting}
+    <div class="fixed inset-0 bg-white bg-opacity-95 z-50 flex flex-col items-center justify-center">
+        <div class="max-w-sm w-full px-6">
+            <div class="mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#f5b83d] mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                </svg>
+                <div class="font-gowun font-bold text-lg">Calculating Results</div>
+            </div>
+            <div class="text-sm font-medium text-gray-700 mb-2">Test submitted.</div>
+            <div class="text-sm font-medium text-gray-700 mb-2">Evaluating your exam...</div>
+            
+            <!-- Animated progress bar -->
+            <div class="h-1.5 w-full bg-gray-200 rounded-full overflow-hidden">
+                <div class="h-full bg-[#f5b83d] rounded-full animate-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        @keyframes progress {
+            0% { width: 0%; }
+            20% { width: 20%; }
+            40% { width: 40%; }
+            60% { width: 60%; } 
+            80% { width: 80%; }
+            100% { width: 95%; }
+        }
+        .animate-progress {
+            animation: progress 2s ease-out forwards;
+        }
+    </style>
+{/if}
+
 <style>
-    .timer {
-        text-align: center;
-        padding: 2rem;
-    }
-    .time {
-        font-size: 2rem;
-        font-weight: bold;
-    }
+
 </style>

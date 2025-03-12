@@ -1,38 +1,151 @@
 <script>
     import {quizScore} from '$lib/stores';
     import {goto} from '$app/navigation'
-    import {mount, onMount} from 'svelte'
+    import {onMount} from 'svelte'
 
     onMount(() => {
         const user_name = sessionStorage.getItem('username')
-        if (!user_name) {
-            goto('/')
-        }
+        if (!user_name) { goto('/') }
     })
 
+    let user_name = sessionStorage.getItem('username')
+    const result_percent = Math.round(($quizScore/5) * 100)
+    const isExamReady = result_percent >= 72;
+    const currentDate = new Date().toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric'
+    });
+    const timeTaken = "18 minutes";
 
-    
+    function handleShare() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'My AWS Exam Results',
+                text: `I scored ${result_percent}% on my AWS Solutions Architect Associate practice exam!`,
+                url: window.location.href
+            })
+            .catch(err => console.error('Error sharing:', err));
+        } else {
+            alert('Sharing is not supported on this browser. Copy the URL to share your results.');
+        }
+    }
 </script>
 
-<div class="result-container">
-    <h1>Test Results</h1>
-    <div class="score-card">
-        <h2>Your Score: {$quizScore}</h2>
+<div class="flex justify-center items-center min-h-screen bg-black bg-opacity-5 p-3">
+    <div class="w-full max-w-4xl bg-white border border-black shadow-md">
+        <!-- Header - Enhanced -->
+        <div class="bg-black border-b border-gray-300 p-4 flex justify-between items-center">
+            <div>
+                <h1 class="text-xl font-mono font-bold tracking-wider text-white">AWS EXAM READINESS</h1>
+                <div class="text-xs font-mono text-gray-300">Test taken on {currentDate}</div>
+            </div>
+            <div class="px-3 py-2 bg-white text-black font-mono text-xs font-bold">
+                ID: {Math.random().toString(36).substr(2, 8).toUpperCase()}
+            </div>
+        </div>
+
+        <!-- Row 1: User Info - Two columns -->
+        <div class="grid grid-cols-2 border-b border-gray-200">
+            <div class="p-4 border-r border-gray-200">
+                <div class="text-xs font-mono uppercase text-black font-bold">Nickname</div>
+                <div class="font-medium text-black">{user_name}</div>
+            </div>
+            <div class="p-4">
+                <div class="text-xs font-mono uppercase text-black font-bold">Test Completed In</div>
+                <div class="text-black">{timeTaken}</div>
+            </div>
+        </div>
+
+        <!-- Row 2: Score and Readiness - Two columns -->
+        <div class="grid grid-cols-2 border-b border-gray-200">
+            <!-- Left: Score -->
+            <div class="p-5 flex flex-col items-center justify-center border-r border-gray-200">
+                <div class="text-xs font-mono uppercase text-black font-bold mb-2">Score</div>
+                <div class={`text-6xl font-bold ${isExamReady ? 'text-green-500' : 'text-red-500'}`}>
+                    {result_percent}%
+                </div>
+                <div class="text-sm font-mono text-black mt-1">{$quizScore}/5 correct</div>
+                
+                <!-- Progress Bar -->
+                <div class="h-6 w-full bg-gray-100 mt-4 relative overflow-hidden border border-gray-300">
+                    <div 
+                        class={`h-full ${isExamReady ? 'bg-green-500' : 'bg-red-500'}`} 
+                        style={`width: ${result_percent}%`}
+                    ></div>
+                </div>
+                <div class="flex justify-between text-xs font-mono w-full mt-1 text-black">
+                    <div>0%</div>
+                    <div>100%</div>
+                </div>
+            </div>
+            
+            <!-- Right: Exam Readiness -->
+            <div class="p-5">
+                {#if isExamReady}
+                    <div class="border-l-4 border-green-500 pl-4">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                            </svg>
+                            <div class="font-mono font-bold text-green-500 text-xl">
+                                Exam Ready!
+                            </div>
+                        </div>
+                        <div class="text-sm mt-2 text-black pl-9">
+                            You've met the 72% passing threshold
+                        </div>
+                    </div>
+                {:else}
+                    <div class="border-l-4 border-red-500 pl-4">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-500 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                            </svg>
+                            <div class="font-mono font-bold text-red-500 text-xl">
+                                Not Exam Ready
+                            </div>
+                        </div>
+                        <div class="text-sm mt-2 text-black pl-9">
+                            Score at least 72% to pass
+                        </div>
+                    </div>
+                {/if}
+            </div>
+        </div>
+        
+        <!-- Row 3: Recommendation - Full width -->
+        <div class="p-5 border-b border-gray-200">
+            <div class="text-xs font-mono uppercase text-black font-bold mb-2">Recommendation</div>
+            <div class="text-black">
+                {isExamReady ? 
+                    'Review any missed questions before taking the exam.' : 
+                    'Focus on reviewing areas where you missed questions.'}
+            </div>
+        </div>
+        
+        <!-- Row 4: Footer - Two columns -->
+        <div class="bg-black p-4 grid grid-cols-2 items-center">
+            <div class="text-xs font-mono text-white">
+                <div class="p-1">cloudguide.com</div>
+                <div class="p-1">Made by raviki</div>
+            </div>
+            <div class="flex justify-end gap-3">
+                <button 
+                    class="px-4 py-2 bg-white text-black text-sm font-mono hover:bg-gray-200 transition-colors border border-gray-300"
+                    onclick={handleShare}
+                >
+                    SHARE
+                </button>
+                <button 
+                    class="px-4 py-2 bg-white text-black text-sm font-mono hover:bg-gray-200 transition-colors border border-gray-300"
+                    onclick={() => goto('/review')}
+                >
+                    REVIEW ANSWERS
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
 <style>
-    .result-container {
-        max-width: 600px;
-        margin: 2rem auto;
-        padding: 1rem;
-        text-align: center;
-    }
     
-    .score-card {
-        background: white;
-        padding: 2rem;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
 </style>

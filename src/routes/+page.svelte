@@ -8,6 +8,12 @@
     let user_name = $state('');
     let nameError = $state('');
 
+    let isLongEnough = $state(false);
+    let isAlphaNumeric = $state(false);
+    let hasAtLeastOneLetter = $state(false);
+
+    let isSubmitting = $state(false)
+
     // Fucntion to fetch the given API, convert object to Array, and handle any error
     async function fetchQuestions() {
         isLoading = true;
@@ -29,7 +35,7 @@
         };
     }
     
-    // Verify the user_name is alphanum and not empty
+    /* Verify the user_name is alphanum and not empty
     function validateUserName(name) {
         if (!name) return 'Please enter a nickname'
 
@@ -40,18 +46,24 @@
 
         if (!hasLetter || !isAlphaNum) return 'Must be alphanum' 
         return ''
-    }
+    }*/
 
     function handleInput() {
-        nameError = validateUserName(user_name);
+        //nameError = validateUserName(user_name);
+
+        isLongEnough = user_name.trim().length >= 3;
+        isAlphaNumeric = /^[a-zA-Z0-9]+$/.test(user_name);
+        hasAtLeastOneLetter = /[a-zA-Z]/.test(user_name);
     }
 
     function isValidUserName(name) {
-        return validateUserName(name) === '';
+        //return validateUserName(name) === '';
+        return name && isLongEnough && isAlphaNumeric && hasAtLeastOneLetter;
     }
 
     // Function to handle on clicking of take test button
     async function handle_submit() {
+        isSubmitting = true;
 
         try {
             let create_user = {'user_name' : user_name}
@@ -69,57 +81,110 @@
 
             $session_id = await response.json();
             sessionStorage.setItem('username', user_name)
+
+            const fetchStart = Date.now();
             await fetchQuestions()
+            const fetchTime = Date.now() - fetchStart;
+
+            if (fetchTime < 2000) {
+                await new Promise(resolve => setTimeout(resolve, 2000 - fetchTime));
+            }
+
             await goto('/test')
         } catch (error) {
             console.error('Error submitting test:', error);
+            isSubmitting = false;
         } 
     }
 
 </script>
 
-<div class="flex pt-10 pb-10 pl-4 pr-4 text-4xl text-black font-gowun">
-    <div >CLOUD GUIDE</div>
+<div class="max-w-2xl mx-auto px-6 pt-4 pb-16">
+    <div class="flex pt-8 pb-6 text-4xl md:text-5xl text-black font-gowun">
+        <div >CLOUD GUIDE</div>
+    </div>
+
+    <div class="flex-col place-items-start pt-4 pb-4 text-black font-gowun tracking-widest">
+        <div class="text-lg">Check Your</div>
+        <div class="text-xl md:text-2xl break-words">AWS Solutions Architect Associate</div>
+        <div class="text-lg">Exam Readiness!</div>
+    </div>
+
+    <div class="flex-col place-items-start pt-4 pb-4 text-black font-roboto tracking-widest text-base">
+        <div>Answer 30 questions in 30 minutes.</div>
+        <div class="mt-2">All questions are made from my personal notes.</div>
+        <div class="mt-2">I scored <span class="font-semibold">899/1000</span> with no tech background by following these notes!</div>
+    </div>
+
+    <div class="mt-8">
+        <form onsubmit={preventDefault(handle_submit)}>
+            <div class="flex flex-col sm:flex-row gap-4 items-start">
+                <div class="w-full sm:w-auto">
+                    <input 
+                        class="bg-[#f5f2f2] focus:outline-none border-b-2 border-gray-300 focus:border-black px-3 py-2 w-full sm:w-64"
+                        type='text' 
+                        name='user_name'
+                        placeholder='Enter your nickname'
+                        autofocus
+                        bind:value={user_name}
+                        oninput={handleInput}
+                    />
+                    
+                    <!-- Requirement indicators -->
+                    <div class="mt-2 text-xs font-roboto">
+                        <div class={isLongEnough ? "text-green-600" : "text-[#a0a29f]"}>
+                            • At least 3 characters long
+                        </div>
+                        <div class={isAlphaNumeric && hasAtLeastOneLetter ? "text-green-600" : "text-[#a0a29f]"}>
+                            • Must contain letters and only alphanumeric characters
+                        </div>
+                    </div>
+                </div>
+
+                {#if isSubmitting}
+                    <button 
+                        disabled
+                        class="rounded-lg px-6 py-2 font-roboto tracking-wider bg-[#f5b83d] text-white flex items-center justify-center"
+                    >
+                        <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Loading...
+                    </button>
+                {:else}
+                    <input 
+                        type='submit' 
+                        value='Start Exam'
+                        disabled={!isValidUserName(user_name)}
+                        class="rounded-lg px-6 py-2 font-roboto tracking-wider
+                        disabled:opacity-50 bg-[#f5b83d] text-white
+                        transition hover:scale-105 duration-150 ease-in-out"
+                    />
+                {/if}
+            </div>
+        </form>
+    </div>
 </div>
 
-<div class="flex-col place-items-start pt-4 pb-4 pl-4 pr-4 text-black font-gowun tracking-widest">
-    <div class="text-base">Check Your</div>
-    <div class="text-lg">AWS Solutions Architect Associate</div>
-    <div class="text-base">Exam Readiness!</div>
-</div>
+{#if isSubmitting}
+    <div class="fixed inset-0 bg-white bg-opacity-90 z-50 flex flex-col items-center justify-center">
+        <div class="flex flex-col items-center">
+            <div class="w-16 h-16 relative">
+                <div class="absolute top-0 left-0 w-full h-full border-4 border-gray-200 rounded-full"></div>
+                <div class="absolute top-0 left-0 w-full h-full border-4 border-t-[#f5b83d] border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin"></div>
+            </div>
+            <h2 class="text-xl font-gowun mt-5 text-gray-800">Preparing Your Exam</h2>
+            <p class="text-sm font-roboto text-gray-600 mt-2">Generating questions based on AWS SAA Exam topics...</p>
+            <p class="text-sm font-roboto text-gray-600 mt-2">You'll have 30 minutes to answer 30 questions.</p>
 
-<div class="flex-col place-items-start pt-4 pb-4 pl-4 pr-4 text-black font-roboto tracking-widest text-base">
-    <div>Answer 30 questions in 30 minutes.</div>
-    <div class="mt-2">All questions are made from my personal notes.</div>
-    <div class="mt-2">I scored 899/1000 with no tech background by following this notes!</div>
-</div>
-
-<div class="flex justify-start pl-4 pt-10 pb-5">
-    <form onsubmit={preventDefault(handle_submit)}>
-        <input class="bg-[#f5f2f2] focus:outline-none border-back border-b-2 focus:border-black"
-        type='text' 
-        name='user_name'
-        placeholder='Enter your nickname'
-        autofocus
-        bind:value={user_name}
-        oninput={handleInput}
-        />
-        <input 
-        type='submit' 
-        value='Submit'
-        disabled={!isValidUserName(user_name)}
-        class="rounded-sm w-40 ml-4 font-roboto tracking-wider
-        disabled:opacity-0 bg-[#f5b83d] text-white rounded-lg w-24
-        transition hover:scale-105 delay-50 duration-100 ease-in-out"
-        />
-    </form>
-</div>
-<div class="flex flex-row justify-start pl-4 pr-4 font-roboto">
-    {#if nameError}
-        <div class="text-[#bd2a4c] text-xs">
-            {nameError}
         </div>
-    {/if}
+    </div>
+{/if}
+
+<div class="fixed bottom-0 left-0 right-0 py-2 text-xs text-center text-gray-500 font-roboto">
+    <p>© {new Date().getFullYear()} Cloud Guide. All rights reserved.</p>
+    <p>made by raviki.</p>
 </div>
 
 <style>
