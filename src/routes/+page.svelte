@@ -85,7 +85,7 @@
 
     onMount(() => {
         reset_stores();
-    })
+    });
 
 </script>
 

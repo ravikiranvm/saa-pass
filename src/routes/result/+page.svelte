@@ -2,11 +2,20 @@
     import {quizScore, time_taken} from '$lib/stores';
     import {goto} from '$app/navigation'
     import {onMount} from 'svelte'
+    import { handle_share, tryNativeShare, downloadImage } from '$lib/html2canvas'
+    import html2canvas from 'html2canvas';
 
-    onMount(() => {
-        const user_name = sessionStorage.getItem('username')
-        if (!user_name) { goto('/') }
-    })
+
+    let user_name = sessionStorage.getItem('username')
+    const result_percent = Math.round(($quizScore/5) * 100)
+    const isExamReady = result_percent >= 72;
+    const currentDate = new Date().toLocaleDateString('en-US', {
+        year: 'numeric', month: 'long', day: 'numeric'
+    });
+
+    const timeTaken = format_time_taken($time_taken);
+
+    let scoreCard;
 
     function format_time_taken(timeInSeconds) {
         const totalSeconds = Math.floor(timeInSeconds/1000);
@@ -22,31 +31,32 @@
         }
     }
 
-    let user_name = sessionStorage.getItem('username')
-    const result_percent = Math.round(($quizScore/5) * 100)
-    const isExamReady = result_percent >= 72;
-    const currentDate = new Date().toLocaleDateString('en-US', {
-        year: 'numeric', month: 'long', day: 'numeric'
-    });
-
-    const timeTaken = format_time_taken($time_taken);
-
     function handleShare() {
-        if (navigator.share) {
-            navigator.share({
-                title: 'My AWS Exam Results',
-                text: `I scored ${result_percent}% on my AWS Solutions Architect Associate practice exam!`,
-                url: window.location.href
-            })
-            .catch(err => console.error('Error sharing:', err));
-        } else {
-            alert('Sharing is not supported on this browser. Copy the URL to share your results.');
-        }
+        handle_share(scoreCard, result_percent)
     }
+
+    onMount(() => {
+        const user_name = sessionStorage.getItem('username')
+        if (!user_name) { goto('/') }
+    })
+
 </script>
 
+<nav class="fixed top-0 left-0 right-0 bg-white border-b border-gray-200 shadow-sm z-10">
+    <div class="max-w-4xl mx-auto px-4 py-2 flex items-center justify-between">
+        <!-- Left side - App name and exam title -->
+        <div class="flex flex-col">
+            <div class="text-xl font-gowun font-bold text-black">CLOUD GUIDE</div>
+            <div class="text-xs font-roboto text-gray-600">Score Card</div>
+        </div>
+    </div>
+</nav>
+
+<!-- Add spacing to prevent content from being hidden under the fixed navbar -->
+<div class="pt-12"></div>
+
 <div class="flex justify-center items-center min-h-screen bg-black bg-opacity-5 p-3">
-    <div class="w-full max-w-4xl bg-white border border-black shadow-md">
+    <div class="w-full max-w-4xl bg-white border border-black shadow-md" bind:this={scoreCard}>
         <!-- Header - Enhanced -->
         <div class="bg-black border-b border-gray-300 p-4 flex justify-between items-center">
             <div>
