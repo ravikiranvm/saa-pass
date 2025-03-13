@@ -115,7 +115,7 @@
                         type='text' 
                         name='user_name'
                         placeholder='Enter your nickname'
-                        autofocus
+                        
                         bind:value={user_name}
                         oninput={handleInput}
                     />

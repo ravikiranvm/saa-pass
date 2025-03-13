@@ -73,13 +73,13 @@
             <!-- Left: Score (unchanged) -->
             <div class="p-5 flex flex-col items-center justify-center border-r border-gray-200">
                 <div class="text-xs font-mono uppercase text-black font-bold mb-2">Score</div>
-                <div class={`text-6xl font-bold ${isExamReady ? 'text-green-500' : 'text-red-500'}`}>
+                <div class={`text-5xl sm:text-6xl font-bold ${isExamReady ? 'text-green-500' : 'text-red-500'}`}>
                     {result_percent}%
                 </div>
-                <div class="text-sm font-mono text-black mt-1">{$quizScore}/30 correct</div>
+                <div class="text-sm font-mono text-black mt-3">{$quizScore}/30 correct</div>
                 
                 <!-- Progress Bar -->
-                <div class="h-6 w-full bg-gray-100 mt-4 relative overflow-hidden border border-gray-300">
+                <div class="h-6 w-full bg-gray-100 mt-6 relative overflow-hidden border border-gray-300">
                     <div 
                         class={`h-full ${isExamReady ? 'bg-green-500' : 'bg-red-500'}`} 
                         style={`width: ${result_percent}%`}
