@@ -111,7 +111,7 @@
             <div class="flex flex-col sm:flex-row gap-4 items-start">
                 <div class="w-full sm:w-auto">
                     <input 
-                        class="bg-[#f5f2f2] focus:outline-none border-b-2 border-gray-300 focus:border-black px-3 py-2 w-full sm:w-64"
+                        class="bg-[#f5f2f2] focus:outline-none border-b-2 animate-pulse focus:animate-none border-black px-3 py-2 w-full sm:w-64"
                         type='text' 
                         name='user_name'
                         placeholder='Enter your nickname'

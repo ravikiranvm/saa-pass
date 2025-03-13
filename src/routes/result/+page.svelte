@@ -7,7 +7,7 @@
 
 
     let user_name = sessionStorage.getItem('username')
-    const result_percent = Math.round(($quizScore/5) * 100)
+    const result_percent = Math.round(($quizScore/30) * 100)
     const isExamReady = result_percent >= 72;
     const currentDate = new Date().toLocaleDateString('en-US', {
         year: 'numeric', month: 'long', day: 'numeric'
@@ -16,6 +16,7 @@
     const timeTaken = format_time_taken($time_taken);
 
     let scoreCard;
+    let examId;
 
     function format_time_taken(timeInSeconds) {
         const totalSeconds = Math.floor(timeInSeconds/1000);
@@ -38,6 +39,8 @@
     onMount(() => {
         const user_name = sessionStorage.getItem('username')
         if (!user_name) { goto('/') }
+
+        examId = Math.random().toString(36).substr(2, 8).toUpperCase();
     })
 
 </script>
@@ -55,7 +58,7 @@
 <!-- Add spacing to prevent content from being hidden under the fixed navbar -->
 <div class="pt-12"></div>
 
-<div class="flex justify-center items-center min-h-screen bg-black bg-opacity-5 p-3">
+<div class="flex flex-col items-center min-h-screen bg-black bg-opacity-5 p-3">
     <div class="w-full max-w-4xl bg-white border border-black shadow-md" bind:this={scoreCard}>
         <!-- Header - Enhanced -->
         <div class="bg-black border-b border-gray-300 p-4 flex justify-between items-center">
@@ -64,7 +67,7 @@
                 <div class="text-xs font-mono text-gray-300">Test taken on {currentDate}</div>
             </div>
             <div class="px-3 py-2 bg-white text-black font-mono text-xs font-bold">
-                ID: {Math.random().toString(36).substr(2, 8).toUpperCase()}
+                ID: {examId}
             </div>
         </div>
 
@@ -95,12 +98,12 @@
             <div class="p-5 flex flex-col justify-center">
                 <div class="mb-5">
                     <div class="text-xs font-mono uppercase text-black font-bold">Nickname</div>
-                    <div class="font-medium text-black">{user_name}</div>
+                    <div class="font-medium text-[#130980]">{user_name}</div>
                 </div>
                 
                 <div>
                     <div class="text-xs font-mono uppercase text-black font-bold">Test Completed In</div>
-                    <div class="text-black">{timeTaken}</div>
+                    <div class="text-[#130980]">{timeTaken}</div>
                 </div>
             </div>
         </div>
@@ -172,6 +175,16 @@
             </div>
         </div>
     </div>
+    <!-- Disclaimer - Now outside of scorecard -->
+    <div class="w-full max-w-4xl border bg-gray-50 p-1 text-xs text-gray-600">
+        <p>This readiness score assesses conceptual AWS knowledge only and does not guarantee performance on the actual AWS certification exam.</p>
+    </div>
+    
+</div>
+
+<div class="hidden sm:block fixed bottom-0 left-0 right-0 py-2 text-xs text-center text-gray-500 font-roboto">
+    <p>© {new Date().getFullYear()} Cloud Guide. All rights reserved.</p>
+    <p>made by raviki.</p>
 </div>
 
 <style>

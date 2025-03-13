@@ -39,7 +39,7 @@ export async function handle_share(scoreCard, result_percent) {
                 downloadImage(canvas);
                 }
             }
-        },'image/png', 0.9);
+        },'image/png', 0.95);
     }
  
 
