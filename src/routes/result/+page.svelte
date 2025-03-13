@@ -50,7 +50,9 @@
     <div class="max-w-4xl mx-auto px-4 py-2 flex items-center justify-between">
         <!-- Left side - App name and exam title -->
         <div class="flex flex-col">
-            <div class="text-xl font-gowun font-bold text-black tracking-wide">CLOUD GUIDE</div>
+            <div class="text-xl font-gowun font-bold text-black tracking-wide">
+                <a href='/'>CLOUD GUIDE</a>
+            </div>
             <div class="text-xs font-roboto text-gray-600">Score Card</div>
         </div>
         <!-- Right side - Original Ko-fi button -->
