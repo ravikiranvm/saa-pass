@@ -33,6 +33,7 @@
     }
 
     function handleShare() {
+        isSharingImage = true;
         handle_share(scoreCard, result_percent)
     }
 
@@ -191,6 +192,7 @@
     </div>
     
 </div>
+
 
 <div class="hidden sm:block fixed bottom-0 left-0 right-0 py-2 text-xs text-center text-gray-500 font-roboto">
     <p>© {new Date().getFullYear()} Cloud Guide. All rights reserved.</p>
