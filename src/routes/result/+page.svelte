@@ -8,7 +8,7 @@
 
     let user_name = sessionStorage.getItem('username')
     const result_percent = Math.round(($quizScore/30) * 100)
-    const isExamReady = result_percent >= 72;
+    const isExamReady = result_percent >= 80;
     const currentDate = new Date().toLocaleDateString('en-US', {
         year: 'numeric', month: 'long', day: 'numeric'
     });
@@ -49,9 +49,19 @@
     <div class="max-w-4xl mx-auto px-4 py-2 flex items-center justify-between">
         <!-- Left side - App name and exam title -->
         <div class="flex flex-col">
-            <div class="text-xl font-gowun font-bold text-black">CLOUD GUIDE</div>
+            <div class="text-xl font-gowun font-bold text-black tracking-wide">CLOUD GUIDE</div>
             <div class="text-xs font-roboto text-gray-600">Score Card</div>
         </div>
+        <!-- Right side - Original Ko-fi button -->
+        <a href="https://ko-fi.com/raviki" target="_blank" rel="noopener noreferrer" 
+           class="flex items-center">
+            <img 
+                src="https://cdn.prod.website-files.com/5c14e387dab576fe667689cf/670f5a01229bf8a18f97a3c1_favion.png" 
+                alt="Support me on Ko-fi" 
+                height="36"
+                class="h-9 animate-bounce"
+            />
+        </a>
     </div>
 </nav>
 
@@ -97,13 +107,13 @@
             <!-- Right: User Info (Nickname and Time) - No dividing border -->
             <div class="p-5 flex flex-col justify-center">
                 <div class="mb-5">
-                    <div class="text-xs font-mono uppercase text-black font-bold">Nickname</div>
-                    <div class="font-medium text-[#130980]">{user_name}</div>
+                    <div class="text-xs font-mono uppercase text-black font-medium">Nickname</div>
+                    <div class="font-bold text-black">{user_name}</div>
                 </div>
                 
                 <div>
-                    <div class="text-xs font-mono uppercase text-black font-bold">Test Completed In</div>
-                    <div class="text-[#130980]">{timeTaken}</div>
+                    <div class="text-xs font-mono uppercase text-black font-medium">Test Completed In</div>
+                    <div class="text-black">{timeTaken}</div>
                 </div>
             </div>
         </div>
@@ -123,7 +133,7 @@
                         </div>
                     </div>
                     <div class="text-sm mt-2 text-black pl-9">
-                        You've met the 72% passing threshold
+                        You've met the 80% passing threshold
                     </div>
                 </div>
             {:else}
@@ -137,7 +147,7 @@
                         </div>
                     </div>
                     <div class="text-sm mt-2 text-black pl-9">
-                        Score at least 72% to pass
+                        Score at least 80% to pass
                     </div>
                 </div>
             {/if}
@@ -176,8 +186,8 @@
         </div>
     </div>
     <!-- Disclaimer - Now outside of scorecard -->
-    <div class="w-full max-w-4xl border bg-gray-50 p-1 text-xs text-gray-600">
-        <p>This readiness score assesses conceptual AWS knowledge only and does not guarantee performance on the actual AWS certification exam.</p>
+    <div class="w-full max-w-4xl border bg-gray-50 p-1 text-xs text-gray-600 text-center">
+        <p>This readiness test assesses conceptual AWS knowledge only and does not guarantee performance on the actual AWS certification exam.</p>
     </div>
     
 </div>

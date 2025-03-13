@@ -40,11 +40,20 @@
     <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
         <!-- Left side - App name and exam title -->
         <div class="flex flex-col">
-            <div class="text-xl font-gowun font-bold text-black">
+            <div class="text-xl font-gowun font-bold text-black tracking-wide">
                 <a href='/'>CLOUD GUIDE</a>
             </div>
             <div class="text-xs font-roboto text-gray-600">Review Answers</div>
         </div>
+        <a href="https://ko-fi.com/raviki" target="_blank" rel="noopener noreferrer" 
+           class="flex items-center">
+            <img 
+                src="https://cdn.prod.website-files.com/5c14e387dab576fe667689cf/670f5a01229bf8a18f97a3c1_favion.png" 
+                alt="Support me on Ko-fi" 
+                height="36"
+                class="h-9 animate-bounce"
+            />
+        </a>
     </div>
 </nav>
 

@@ -90,7 +90,7 @@
 </script>
 
 <div class="max-w-2xl mx-auto px-6 pt-4 pb-16">
-    <div class="flex pt-8 pb-6 text-4xl md:text-5xl text-black font-gowun">
+    <div class="flex pt-8 pb-6 text-4xl md:text-5xl text-black font-gowun tracking-wider">
         <div >CLOUD GUIDE</div>
     </div>
 
@@ -100,7 +100,7 @@
         <div class="text-lg">Exam Readiness!</div>
     </div>
 
-    <div class="flex-col place-items-start pt-4 pb-4 text-black font-roboto tracking-widest text-base">
+    <div class="flex-col place-items-start pt-4 pb-4 text-black font-roboto tracking-wider text-base">
         <div>Answer 30 questions in 30 minutes.</div>
         <div class="mt-2">All questions are made from my personal notes.</div>
         <div class="mt-2">I scored <span class="font-semibold">899/1000</span> with no tech background by following these notes!</div>
