@@ -85,12 +85,12 @@
 
     onMount(() => {
         reset_stores();
-    })
+    });
 
 </script>
 
 <div class="max-w-2xl mx-auto px-6 pt-4 pb-16">
-    <div class="flex pt-8 pb-6 text-4xl md:text-5xl text-black font-gowun">
+    <div class="flex pt-8 pb-6 text-4xl md:text-5xl text-black font-gowun tracking-wider">
         <div >CLOUD GUIDE</div>
     </div>
 
@@ -100,7 +100,7 @@
         <div class="text-lg">Exam Readiness!</div>
     </div>
 
-    <div class="flex-col place-items-start pt-4 pb-4 text-black font-roboto tracking-widest text-base">
+    <div class="flex-col place-items-start pt-4 pb-4 text-black font-roboto tracking-wider text-base">
         <div>Answer 30 questions in 30 minutes.</div>
         <div class="mt-2">All questions are made from my personal notes.</div>
         <div class="mt-2">I scored <span class="font-semibold">899/1000</span> with no tech background by following these notes!</div>
@@ -111,11 +111,11 @@
             <div class="flex flex-col sm:flex-row gap-4 items-start">
                 <div class="w-full sm:w-auto">
                     <input 
-                        class="bg-[#f5f2f2] focus:outline-none border-b-2 border-gray-300 focus:border-black px-3 py-2 w-full sm:w-64"
+                        class="bg-[#f5f2f2] focus:outline-none border-b-2 animate-pulse focus:animate-none border-black px-3 py-2 w-full sm:w-64"
                         type='text' 
                         name='user_name'
                         placeholder='Enter your nickname'
-                        autofocus
+                        
                         bind:value={user_name}
                         oninput={handleInput}
                     />

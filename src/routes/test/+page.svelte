@@ -9,7 +9,6 @@
     let totalQuestions = questions.length;
     let currentQuestionIndex = $state(0);
     let selectedOption = $state(null);
-    //let answers = $state([]);
     let countdown;
     let displayTime = $state('30:00')
 
