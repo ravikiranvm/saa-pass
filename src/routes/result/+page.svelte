@@ -33,7 +33,6 @@
     }
 
     function handleShare() {
-        isSharingImage = true;
         handle_share(scoreCard, result_percent)
     }
 
