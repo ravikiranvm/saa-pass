@@ -41,7 +41,7 @@
         <!-- Left side - App name and exam title -->
         <div class="flex flex-col">
             <div class="text-xl font-gowun font-bold text-black tracking-wide">
-                <a href='/'>CLOUD GUIDE</a>
+                <a href='/'>The Cloud Squad</a>
             </div>
             <div class="text-xs font-roboto text-gray-600">Review Answers</div>
         </div>
@@ -153,6 +153,6 @@
 </div>
 
 <div class="mt-4 pb-2 text-xs text-center text-gray-500 font-roboto">
-    <p>© {new Date().getFullYear()} Cloud Guide. All rights reserved.</p>
+    <p>© {new Date().getFullYear()} The Cloud Squad. All rights reserved.</p>
     <p>made by raviki.</p>
 </div>

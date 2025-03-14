@@ -91,7 +91,7 @@
         try {
             const submitStart = Date.now();
 
-            const response = await fetch('https://phrxciu6ad.execute-api.ap-south-1.amazonaws.com/stage/submit-test', {
+            const response = await fetch('https://aeb542xxee.execute-api.ap-south-1.amazonaws.com/prod/submit-test', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -136,7 +136,7 @@
     <div class="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
         <!-- Left side - App name and exam title -->
         <div class="flex flex-col">
-            <div class="text-xl font-gowun font-bold text-black">CLOUD GUIDE</div>
+            <div class="text-xl font-gowun font-bold text-black">The Cloud Squad</div>
             <div class="text-xs font-roboto text-gray-600">AWS SAA Exam Readiness</div>
         </div>
         
