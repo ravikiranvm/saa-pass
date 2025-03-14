@@ -174,7 +174,7 @@
 
 <div class="fixed bottom-0 left-0 right-0 py-2 text-xs text-center text-gray-500 font-roboto">
     <p>© {new Date().getFullYear()} The Cloud Squad. All rights reserved.</p>
-    <p>made by raviki.</p>
+    <p>made by <a href="https://www.linkedin.com/in/ravikiranvm/" target="_blank" rel="noopener noreferrer" class="text-[#b5720d] hover:underline text-sm">raviki</a></p>
 </div>
 
 <style>
