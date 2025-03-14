@@ -25,11 +25,12 @@ export async function handle_share(scoreCard, result_percent) {
                     await navigator.share({
                         files: [file],
                         title: 'AWS Exam Readiness',
-                        text: "I've just checked my AWS Exam Readiness With CloudGuide. Check yours now!",
+                        text: "I've just checked my AWS Exam Readiness With 'The Cloud Squad'. Check yours now!",
+                        url: 'https://thecloudsquad.com'
                     });
                 } catch (error) {
                     if (error.name === 'AbortError') {
-                        tryNativeShare();
+                        tryNativeShare(result_percent);
                     }
                 }
             } else {
@@ -52,8 +53,8 @@ export function tryNativeShare(result_percent) {
     if (navigator.share) {
         navigator.share({
             title: 'AWS Exam Readiness',
-            text: `I've just checked my AWS Exam Readiness With CloudGuide and scored ${result_percent}%. Check yours now!`,
-            url: 'https://cloudguide.dev'
+            text: `I've just checked my AWS Exam Readiness With 'The Cloud Squad' and scored ${result_percent}%. Check yours now!`,
+            url: 'https://thecloudsquad.com'
         })
     } else {
         alert('Sharing is not supported in this browser. Please take a screenshot and share it manually');
