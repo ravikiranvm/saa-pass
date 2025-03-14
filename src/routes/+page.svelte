@@ -20,7 +20,7 @@
     async function fetchQuestions() {
         isLoading = true;
         try {
-            const response = await fetch('https://phrxciu6ad.execute-api.ap-south-1.amazonaws.com/stage/saa-questions');
+            const response = await fetch('https://aeb542xxee.execute-api.ap-south-1.amazonaws.com/prod/saa-questions');
             const data = await response.json();
             $testQuestions = Object.values(data);
             isLoading = false;
@@ -53,7 +53,7 @@
 
         try {
             let create_user = {'user_name' : user_name}
-            const response = await fetch('https://phrxciu6ad.execute-api.ap-south-1.amazonaws.com/stage/create-user', {
+            const response = await fetch('https://aeb542xxee.execute-api.ap-south-1.amazonaws.com/prod/create-user', {
                 'method' : 'POST',
                 'headers' : {
                     'Content-Type': 'application/json'
@@ -91,7 +91,7 @@
 
 <div class="max-w-2xl mx-auto px-6 pt-4 pb-16">
     <div class="flex pt-8 pb-6 text-4xl md:text-5xl text-black font-gowun tracking-wider">
-        <div >CLOUD GUIDE</div>
+        <div >The Cloud Squad</div>
     </div>
 
     <div class="flex-col place-items-start pt-4 pb-4 text-black font-gowun tracking-widest">
@@ -173,7 +173,7 @@
 {/if}
 
 <div class="fixed bottom-0 left-0 right-0 py-2 text-xs text-center text-gray-500 font-roboto">
-    <p>© {new Date().getFullYear()} Cloud Guide. All rights reserved.</p>
+    <p>© {new Date().getFullYear()} The Cloud Squad. All rights reserved.</p>
     <p>made by raviki.</p>
 </div>
 

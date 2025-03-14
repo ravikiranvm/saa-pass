@@ -50,7 +50,7 @@
         <!-- Left side - App name and exam title -->
         <div class="flex flex-col">
             <div class="text-xl font-gowun font-bold text-black tracking-wide">
-                <a href='/'>CLOUD GUIDE</a>
+                <a href='/'>The Cloud Squad</a>
             </div>
             <div class="text-xs font-roboto text-gray-600">Score Card</div>
         </div>
@@ -168,7 +168,7 @@
         <!-- Row 4: Footer - Two columns -->
         <div class="bg-black p-4 grid grid-cols-2 items-center">
             <div class="text-xs font-mono text-white">
-                <div class="p-1">cloudguide.com</div>
+                <div class="p-1">thecloudsquad.com</div>
                 <div class="p-1">Made by raviki</div>
             </div>
             <div class="flex justify-end gap-3">
