@@ -3,6 +3,9 @@
     import {goto} from '$app/navigation';
     import {testQuestions, session_id, reset_stores} from '$lib/stores'
     import {onMount} from 'svelte'
+    import {get_total_tests_taken} from '$lib/utils'
+    import { tweened } from 'svelte/motion';
+    import { cubicOut } from 'svelte/easing';
 
     let questions = $state([]);
     let isLoading = $state(false);
@@ -14,6 +17,8 @@
     let hasAtLeastOneLetter = $state(false);
 
     let isSubmitting = $state(false)
+
+    let total_tests_taken = $state(0)
 
 
     // Fucntion to fetch the given API, convert object to Array, and handle any error
@@ -83,9 +88,42 @@
         } 
     }
 
-    onMount(() => {
+    onMount(async () => {
         reset_stores();
+
+        try {
+            total_tests_taken = await get_total_tests_taken();
+        } catch (error) {
+            console.error('Error fetching total tests taken:', error);
+            total_tests_taken = 0; 
+        }
+
     });
+
+    function countUp(node, { duration = 2000, initial = 0, value = 0 }) {
+    // Create a tweened store for smooth animation
+    const tween = tweened(initial, {
+        duration,
+        easing: cubicOut
+    });
+    
+    // Set the value to animate to
+    tween.set(value);
+    
+    // Subscribe to updates and update the DOM
+    const unsubscribe = tween.subscribe($tween => {
+        node.textContent = Math.floor($tween);
+    });
+    
+    return {
+        update({ value }) {
+            tween.set(value); // Update if value changes
+        },
+        destroy() {
+            unsubscribe(); // Clean up subscription
+        }
+    };
+}
 
 </script>
 
@@ -104,6 +142,19 @@
         <div>Answer 30 questions in 30 minutes.</div>
         <div class="mt-2">All questions are made from my personal notes.</div>
         <div class="mt-2">I scored <span class="font-semibold">899/1000</span> with no tech background by following these notes!</div>
+    </div>
+
+    <div class="flex items-baseline">
+        <span class="text-xl font-roboto font-bold tracking-wider mr-1">
+            {#if typeof total_tests_taken === 'number'}
+                <span class="counter-value" use:countUp={{duration: 2000, initial: 0, value: total_tests_taken}}>
+                    {total_tests_taken}
+                </span>
+            {:else}
+                <span class="animate-pulse">...</span>
+            {/if}
+        </span>
+        <span class="text-base text-black font-roboto tracking-wider"> tests taken till now!</span>
     </div>
 
     <div class="mt-8">
@@ -179,6 +230,19 @@
 
 <style>
     
+    /* Counter styling */
+    @keyframes highlight {
+        0% { color: #f5b83d; }
+        100% { color: #b5720d; }
+    }
+    
+    /* Add this class to your counter span */
+    .counter-value {
+        font-feature-settings: "tnum";
+        font-variant-numeric: tabular-nums;
+        animation: highlight 2s ease-out;
+        color: #b5720d;
+    }
 
 </style>
 
