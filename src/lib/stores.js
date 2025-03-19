@@ -18,4 +18,6 @@ export function reset_stores() {
     session_id.set('');
     answers.set([]);
     time_taken.set(0);
+    sessionStorage.removeItem('username');
+    sessionStorage.removeItem('hasReviewSubmitted');
 }
