@@ -1,3 +1,5 @@
+export const prerender = true;
+
 export async function GET({ url }) {
     const baseURL = 'https://thecloudsquad.com';
 
