@@ -24,7 +24,7 @@ export async function GET({ url }) {
         `).join('')}
     </urlset>`;
 
-    return new Response(sitemap, {
+    return new Response(sitemap.trim(), {
         headers: {
             'Content-Type': 'application/xml',
             'Cache-Control': 'max-age=3600',
