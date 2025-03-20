@@ -9,11 +9,65 @@
 		<meta name="keywords" content="AWS, Cloud, AWS Exam, AWS Solutions Architect Exam, AWS SAA Exam, AWS SAA-C03, AWS Certified Solutions Architect, AWS Certified, Free exam, Free Mock Test, AWS Practice Test, AWS Practice Exam"/>
 		<meta name="robots" content="index, follow"/>
 		<meta name="author" content="The Cloud Squad"/>
-		<link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/logo.svg" />
-		<link rel="icon" type="image/png" href="%sveltekit.assets%/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<!--
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gowun+Dodum&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		-->
+		<!--
+		<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gowun+Dodum&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">		
+		-->
+		<!-- Add display=swap parameter to prevent render blocking 
+        <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gowun+Dodum&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap&text=ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789" rel="stylesheet" media="print" onload="this.media='all'">
+        -->
+        <!-- Fallback in case JS is disabled
+        <noscript>
+            <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Gowun+Dodum&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+        </noscript>
+		-->
+		<!-- Preload critical fonts -->
+		<link rel="preload" href="%sveltekit.assets%/fonts/bebas-neue-regular.woff2" as="font" type="font/woff2" crossorigin>        <link rel="preload" href="%sveltekit.assets%/fonts/roboto-regular.woff2" as="font" type="font/woff2" crossorigin>
+		<link rel="preload" href="%sveltekit.assets%/fonts/roboto-bold.woff2" as="font" type="font/woff2" crossorigin>
+        
+        <!-- Load font CSS non-blocking -->
+        <link rel="stylesheet" href="%sveltekit.assets%/fonts.css" media="print" onload="this.media='all'">
+        
+        <!-- Fallback for no JS -->
+        <noscript>
+            <link rel="stylesheet" href="%sveltekit.assets%/fonts.css">
+        </noscript>
+
+		<link rel="icon" type="image/svg+xml" href="%sveltekit.assets%/logo.svg" />
+		<link rel="icon" type="image/png" href="%sveltekit.assets%/favicon.png" />
+
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "Course",
+			"name": "AWS Solutions Architect Certification Practice Test",
+			"description": "Free 30-minute test to check your AWS certification exam readiness",
+			"provider": {
+			"@type": "Organization",
+			"name": "The Cloud Squad"
+			},
+			"offers": {
+			"@type": "Offer",
+			"price": "0",
+			"priceCurrency": "USD"
+			},
+			"category": "AWS Certification",
+			"hasCourseInstance": {
+				"@type": "CourseInstance",
+				"courseMode": "online",
+				"courseWorkload": "PT30M",
+				"instructor": {
+					"@type": "Organization",
+					"name": "The Cloud Squad"
+				}
+			}
+		}
+		</script>
+
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
