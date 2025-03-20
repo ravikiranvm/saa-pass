@@ -6,6 +6,7 @@ export default {
 		extend: {
 			fontFamily: {
                 'gowun': ["Bebas Neue", 'sans-serif'],
+				'roboto': ["Roboto", 'sans-serif']
             },
 		}
 	},

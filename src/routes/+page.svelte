@@ -144,8 +144,10 @@
         <div class="mt-2">I scored <span class="font-semibold">899/1000</span> with no tech background by following these notes!</div>
     </div>
 
+    
     <div class="flex items-baseline">
-        <span class="text-xl font-roboto font-bold tracking-wider mr-1">
+        <!-- Add fixed-width container -->
+        <span class="inline-block text-xl font-roboto font-bold tracking-wider mr-1 min-w-[3ch] text-right">
             {#if typeof total_tests_taken === 'number'}
                 <span class="counter-value" use:countUp={{duration: 2000, initial: 0, value: total_tests_taken}}>
                     {total_tests_taken}
@@ -242,6 +244,7 @@
         font-variant-numeric: tabular-nums;
         animation: highlight 2s ease-out;
         color: #b5720d;
+        transform: translateZ(0);
     }
 
 </style>
