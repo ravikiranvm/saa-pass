@@ -1,38 +1,40 @@
-# sv
+# The Cloud Squad - Frontend
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+The Cloud Squad is a platform designed to help users assess their readiness for AWS certification exams. This repository contains the frontend codebase for the application, built using modern web technologies to deliver a seamless and engaging user experience.
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+- **AWS Exam Readiness Test**: A 30-minute test with 30 high-quality questions to evaluate the user's conceptual knowledge of AWS.
+- **Real-Time Feedback**: Users receive a detailed scorecard with their performance, including percentage scores and readiness status.
+- **Review Answers**: Users can review their answers, see correct answers, and read explanations for better understanding.
+- **Progress Tracking**: The app tracks the total number of tests taken and displays it dynamically on the homepage.
+- **Sharing Options**: Users can share their scorecards via social media or download them as an image.
+- **Responsive Design**: The app is optimized for both desktop and mobile devices.
+- **Integration with Backend**: The frontend communicates with the backend API to fetch questions, submit answers, and retrieve scores.
 
-```bash
-# create a new project in the current directory
-npx sv create
+## Upcoming Feature: Test Performance Analysis with LLM
+I am working on integrating the app with a Large Language Model (LLM) to generate detailed performance and analysis reports. These reports will provide personalized insights and recommendations to help users improve their AWS exam readiness.
 
-# create a new project in my-app
-npx sv create my-app
-```
+## Architecture
 
-## Developing
+### Frontend
+- **Framework**: [SvelteKit](https://kit.svelte.dev/) for building a fast and reactive user interface.
+- **Styling**: TailwindCSS for utility-first styling and responsive design.
+- **State Management**: Svelte stores for managing application state, such as quiz scores and user answers.
+- **Build Tool**: Vite for fast builds and development.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+### Backend
+The backend for this project is hosted in a separate repository: [The Cloud Squad Backend](https://github.com/ravikiranvm/the-cloud-squad-be). It provides APIs for:
+- Fetching test questions.
+- Submitting test answers and calculating scores.
+- Tracking user sessions and storing reviews.
 
-```bash
-npm run dev
+### Static Assets
+- Fonts and icons are preloaded and optimized for performance.
+- Static assets like the favicon and logo are stored in the `static/` directory.
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## How It Works
+1. **Homepage**: Users enter their nickname and start the test.
+2. **Test Page**: Users answer 30 questions within 30 minutes. A timer ensures the test is completed within the allotted time.
+3. **Result Page**: After submission, users receive a scorecard with their performance details.
+4. **Review Page**: Users can review their answers, see explanations, and submit feedback.
