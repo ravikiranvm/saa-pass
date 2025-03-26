@@ -1,4 +1,4 @@
-# The Cloud Squad - Frontend
+# The Cloud Squad (Frontend)
 
 The Cloud Squad is a platform designed to help users assess their readiness for AWS certification exams. This repository contains the frontend codebase for the application, built using modern web technologies to deliver a seamless and engaging user experience.
 
@@ -16,6 +16,8 @@ The Cloud Squad is a platform designed to help users assess their readiness for 
 I am working on integrating the app with a Large Language Model (LLM) to generate detailed performance and analysis reports. These reports will provide personalized insights and recommendations to help users improve their AWS exam readiness.
 
 ## Architecture
+
+![alt text](<Architecture Diagram.png>)
 
 ### Frontend
 - **Framework**: [SvelteKit](https://kit.svelte.dev/) for building a fast and reactive user interface.
