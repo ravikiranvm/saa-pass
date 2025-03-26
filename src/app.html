@@ -39,42 +39,141 @@
 
 		<script type="application/ld+json">
 			{
-				"@context": "https://schema.org",
-				"@type": "Quiz",
-				"name": "AWS Solutions Architect Certification Practice Test",
-				"description": "Take a free 30-minute AWS practice test to check your certification readiness. Answer high-quality AWS questions based on personal notes from the AWS SAA exam preparation.",
+			  "@context": "https://schema.org/",
+			  "@type": "Quiz",
+			  "name": "AWS Solutions Architect Certification Practice Test",
+			  "description": "Take a free 30-minute AWS practice test to check your certification readiness. Answer high-quality AWS questions based on personal notes from the AWS SAA exam preparation.",
+			  "url": "https://thecloudsquad.com",
+			  "image": "https://thecloudsquad.com/logo.svg",
+			  "author": {
+				"@type": "Person",
+				"name": "raviki"
+			  },
+			  "provider": {
+				"@type": "Organization",
+				"name": "The Cloud Squad",
 				"url": "https://thecloudsquad.com",
-				"image": "https://thecloudsquad.com/logo.svg",
-				"author": {
-					"@type": "Person",
-					"name": "raviki"
+				"logo": "https://thecloudsquad.com/logo.svg"
+			  },
+			  "educationalLevel": "Intermediate",
+			  "audience": {
+				"@type": "Audience",
+				"audienceType": "AWS Certification Candidates"
+			  },
+			  "datePublished": "2023-03-01",
+			  "dateModified": "2024-03-26",
+			  "offers": {
+				"@type": "Offer",
+				"price": "0",
+				"priceCurrency": "USD",
+				"url": "https://thecloudsquad.com"
+			  },
+			  "hasPart": [
+				{
+				  "@type": "Question",
+				  "educationalAlignment": [
+					{
+					  "@type": "AlignmentObject",
+					  "alignmentType": "educationalSubject",
+					  "targetName": "Cloud Computing"
+					},
+					{
+					  "@type": "AlignmentObject",
+					  "alignmentType": "educationalSubject",
+					  "targetName": "AWS Storage Services"
+					}
+				  ],
+				  "about": {
+					"@type": "Thing",
+					"name": "AWS S3 Object Lock"
+				  },
+				  "educationalLevel": "intermediate",
+				  "eduQuestionType": "Multiple choice",
+				  "learningResourceType": "Practice problem",
+				  "assesses": "Knowledge of AWS S3 Object Lock for regulatory compliance",
+				  "name": "S3 Object Lock Governance Mode vs Compliance Mode",
+				  "text": "A company needs to implement S3 Object Lock for regulatory compliance. How does Governance Mode differ from Compliance Mode?",
+				  "suggestedAnswer": [
+					{
+					  "@type": "Answer",
+					  "position": 1,
+					  "text": "Governance Mode only works with versioning enabled"
+					},
+					{
+					  "@type": "Answer",
+					  "position": 2,
+					  "text": "Compliance Mode allows authorized users to remove locks"
+					},
+					{
+					  "@type": "Answer",
+					  "position": 3,
+					  "text": "Compliance Mode only works with new buckets"
+					}
+				  ],
+				  "acceptedAnswer": {
+					"@type": "Answer",
+					"position": 0,
+					"text": "Governance Mode allows privileged users to remove locks",
+					"answerExplanation": {
+					  "@type": "Comment",
+					  "text": "In Governance Mode, users with special permissions can remove locks, while in Compliance Mode, no one can remove locks during the retention period. Both modes require versioning, and both work with existing buckets."
+					}
+				  }
 				},
-				"provider": {
-					"@type": "Organization",
-					"name": "The Cloud Squad",
-					"url": "https://thecloudsquad.com",
-					"logo": "https://thecloudsquad.com/logo.svg"
-				},
-				"educationalLevel": "Intermediate",
-				"audience": {
-					"@type": "Audience",
-					"audienceType": "AWS Certification Candidates"
-				},
-				"datePublished": "2025-03-01",
-				"dateModified": "2025-03-26",
-				"offers": {
-					"@type": "Offer",
-					"price": "0",
-					"priceCurrency": "USD",
-					"url": "https://thecloudsquad.com"
-				},
-				"interactionStatistic": {
-					"@type": "InteractionCounter",
-					"interactionType": "https://schema.org/CompletedActionStatus",
-					"userInteractionCount": 1200
+				{
+				  "@type": "Question",
+				  "educationalAlignment": [
+					{
+					  "@type": "AlignmentObject",
+					  "alignmentType": "educationalSubject",
+					  "targetName": "Cloud Computing"
+					},
+					{
+					  "@type": "AlignmentObject",
+					  "alignmentType": "educationalSubject",
+					  "targetName": "AWS Database Services"
+					}
+				  ],
+				  "about": {
+					"@type": "Thing",
+					"name": "Aurora Storage Architecture"
+				  },
+				  "educationalLevel": "intermediate",
+				  "eduQuestionType": "Multiple choice",
+				  "learningResourceType": "Practice problem",
+				  "assesses": "Understanding of Amazon Aurora's storage architecture",
+				  "name": "Aurora Cluster Volume Architecture",
+				  "text": "What is a key benefit of Aurora's cluster volume architecture?",
+				  "suggestedAnswer": [
+					{
+					  "@type": "Answer",
+					  "position": 0,
+					  "text": "Unlimited storage scaling"
+					},
+					{
+					  "@type": "Answer",
+					  "position": 2,
+					  "text": "Continuous backup to multiple regions"
+					},
+					{
+					  "@type": "Answer",
+					  "position": 3,
+					  "text": "Instant cross-region replication"
+					}
+				  ],
+				  "acceptedAnswer": {
+					"@type": "Answer",
+					"position": 1,
+					"text": "Self-healing storage with automatic rebalancing",
+					"answerExplanation": {
+					  "@type": "Comment",
+					  "text": "Aurora's cluster volume provides self-healing capabilities with automatic rebalancing of data across storage nodes. While it offers other benefits, the self-healing aspect is unique and ensures continuous data integrity and availability."
+					}
+				  }
 				}
+			  ]
 			}
-			</script>
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
