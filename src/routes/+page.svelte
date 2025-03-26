@@ -238,7 +238,6 @@
         100% { color: #b5720d; }
     }
     
-    /* Add this class to your counter span */
     .counter-value {
         font-feature-settings: "tnum";
         font-variant-numeric: tabular-nums;
