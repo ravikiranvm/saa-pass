@@ -120,7 +120,7 @@
             tween.set(value); // Update if value changes
         },
         destroy() {
-            unsubscribe(); // Clean up subscription
+            unsubscribe(); 
         }
     };
 }
