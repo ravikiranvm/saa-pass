@@ -47,6 +47,28 @@
     function nextQuestion() {
         if (currentQuestionIndex < totalQuestions - 1) {
             currentQuestionIndex += 1;
+
+            const previousAnswer = $answers.find(answer => answer.id === questions[currentQuestionIndex].id);
+        
+            if (previousAnswer) {
+                selectedOption = previousAnswer.answer;
+            } else {
+                selectedOption = null;
+            }
+
+        }
+    }
+
+    function previousQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex -= 1;
+
+            const previousAnswer = $answers.find(answer => answer.id === questions[currentQuestionIndex].id);
+            if (previousAnswer) {
+                selectedOption = previousAnswer.answer;
+            } else {
+                selectedOption = null;
+            }
         }
     }
 
@@ -65,12 +87,20 @@
                 answer: Number(selectedOption)
             };
 
-            $answers = [...$answers, answer];
+            const existingAnswerIndex = $answers.findIndex(a => a.id === answer.id);
+            if (existingAnswerIndex >= 0) {
+                const updatedAnswers = [...$answers];
+                updatedAnswers[existingAnswerIndex] = answer;
+                $answers = updatedAnswers;
+            }
+            else {
+                $answers = [...$answers, answer];
+            }
 
             if (currentQuestionIndex === (totalQuestions -1)) {
                 await submitTest()
             } else {
-                selectedOption = null;
+                //selectedOption = null;
                 nextQuestion();
             }
         }
@@ -145,13 +175,22 @@
             {displayTime}
         </div>
     </div>
+
+    <!-- Progress bar beneath navigation content -->
+    <div class="h-1 w-full bg-gray-200 overflow-hidden">
+        <div 
+            class="h-full bg-[#f5b83d] transition-all duration-300 ease-out" 
+            style="width: {((currentQuestionIndex + 1) / totalQuestions) * 100}%">
+        </div>
+    </div>
 </nav>
 
 <!-- Add spacing to prevent content from being hidden under the fixed navbar -->
 <div class="pt-12"></div>
 
 
-<!-- Main content with padding at bottom to prevent overlap with fixed button -->
+<!-- Main content with padding at bottom to prevent overlap with fixed button 
+ #key attribute re-renders DOM for every question, resets internal state and ensures fresh binding-->
 {#if questions.length > 0}
     <div class="max-w-3xl mx-auto px-4 sm:px-8 py-6 mt-8 pb-24 bg-white border border-gray-200 rounded-lg">
         <div class="mb-4 font-roboto text-sm text-gray-600">
@@ -164,25 +203,35 @@
         
         <form onsubmit={preventDefault(handleSubmit)}>
             <div class="space-y-3">
-                {#each questions[currentQuestionIndex].options as option, index}
-                    <label class="flex items-start gap-x-4 p-3 border border-gray-200 rounded-lg 
-                            hover:bg-gray-50 cursor-pointer transition-colors duration-150">
-                        <input 
-                            type="radio" 
-                            name={questions[currentQuestionIndex].question} 
-                            value={index}
-                            bind:group={selectedOption} 
-                            class="mt-1 accent-[#f5b83d]"/>
-                        <span>{option}</span>
-                    </label>
-                {/each}
+                {#key currentQuestionIndex}
+                    {#each questions[currentQuestionIndex].options as option, index}
+                        <label class="flex items-start gap-x-4 p-3 border border-gray-200 rounded-lg 
+                                hover:bg-gray-50 cursor-pointer transition-colors duration-150">
+                            <input 
+                                type="radio" 
+                                name={questions[currentQuestionIndex].question} 
+                                value={index}
+                                bind:group={selectedOption} 
+                                class="mt-1 accent-[#f5b83d]"/>
+                            <span>{option}</span>
+                        </label>
+                    {/each}
+                {/key}
             </div>
         </form>
     </div>
     
     <!-- Fixed button container always visible at bottom -->
     <div class="fixed bottom-0 left-0 right-0 py-4 bg-white border-t border-gray-200 shadow-md z-10">
-        <div class="max-w-3xl mx-auto px-4 sm:px-8 flex justify-center">
+        <div class="max-w-3xl mx-auto px-4 sm:px-8 flex justify-between">
+            <button
+                type="button"
+                onclick={previousQuestion}
+                disabled={currentQuestionIndex === 0}
+                class="px-6 py-2 border border-gray-300 text-gray-700 text-sm rounded
+                disabled:opacity-30 hover:bg-gray-50">
+                Previous Question
+            </button>
             <button 
                 type="button"
                 onclick={handleSubmit}
